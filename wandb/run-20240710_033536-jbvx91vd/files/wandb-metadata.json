@@ -1,0 +1,294 @@
+{
+    "os": "Linux-4.15.0-177-generic-x86_64-with-glibc2.35",
+    "python": "3.12.4",
+    "heartbeatAt": "2024-07-10T03:35:38.396135",
+    "startedAt": "2024-07-10T03:35:36.355928",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/fk/python_code/pp/train.py",
+    "codePathLocal": "train.py",
+    "codePath": "train.py",
+    "host": "36af47901949",
+    "username": "fk",
+    "executable": "/home/fk/miniconda3/envs/pp/bin/python3.12",
+    "cpu_count": 24,
+    "cpu_count_logical": 48,
+    "cpu_freq": {
+        "current": 2560.9003958333337,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1881.826,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2572.309,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.872,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.999,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2641.414,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2700.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2706.068,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2600.285,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1911.327,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2601.35,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2412.515,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2598.588,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2706.033,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.999,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2217.833,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2591.459,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.999,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2621.792,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2705.991,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2629.23,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2522.927,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2547.311,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2698.746,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2677.78,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1924.2,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2622.211,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2504.557,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.997,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.605,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2700.001,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2700.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2613.983,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 1954.692,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2603.774,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2426.137,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2601.053,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2700.001,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.997,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2353.597,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2640.121,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2695.104,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2651.131,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2700.0,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2621.891,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2698.954,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2543.837,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2523.724,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2699.999,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 8130.385314941406,
+            "used": 4831.556282043457
+        }
+    },
+    "gpu": "Tesla V100-PCIE-32GB",
+    "gpu_count": 4,
+    "gpu_devices": [
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34359738368
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34359738368
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34359738368
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34359738368
+        }
+    ],
+    "memory": {
+        "total": 251.59790802001953
+    }
+}
