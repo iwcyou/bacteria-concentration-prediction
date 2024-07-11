@@ -38,7 +38,7 @@ class CustomDataset(Dataset):
         label = self.labels[idx]
         if self.transform:
             image = self.transform(image)
-        return image, torch.tensor(label, dtype=torch.float32)
+        return image, torch.tensor(label, dtype=torch.float64)
 
 def preprocess_data(root_dir, batch_size=32):
     transform = transforms.Compose([
@@ -68,9 +68,9 @@ def build_model():
     model = models.resnet50(pretrained=True)
     num_ftrs = model.fc.in_features
     model.fc = nn.Sequential(
-        nn.Linear(num_ftrs, 1024),
+        nn.Linear(num_ftrs, 1024, dtype=torch.float64),
         nn.ReLU(),
-        nn.Linear(1024, 1)
+        nn.Linear(1024, 1, dtype=torch.float64)
     )
     return model
 
@@ -80,7 +80,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model = model.to(device)
+    model = model.to(device).double()
 
     best_val_loss = float('inf')
     best_epoch = 0
@@ -91,7 +91,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
         running_loss = 0.0
         running_mae = 0.0
         for inputs, labels in train_loader:
-            inputs, labels = inputs.to(device), labels.to(device).unsqueeze(1)
+            inputs, labels = inputs.to(device).double(), labels.to(device).unsqueeze(1).double()
 
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -104,14 +104,14 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
 
         epoch_loss = running_loss / len(train_loader.dataset)
         epoch_mae = running_mae / len(train_loader.dataset)
-        print(f"Epoch {epoch+1}/{epochs}, Loss: {epoch_loss:.4f}, MAE: {epoch_mae:.4f}")
+        print(f"Epoch {epoch+1}/{epochs}, Loss: {epoch_loss:.6f}, MAE: {epoch_mae:.6f}")
 
         model.eval()
         val_loss = 0.0
         val_mae = 0.0
         with torch.no_grad():
             for inputs, labels in val_loader:
-                inputs, labels = inputs.to(device), labels.to(device).unsqueeze(1)
+                inputs, labels = inputs.to(device).double(), labels.to(device).unsqueeze(1).double()
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
                 val_loss += loss.item() * inputs.size(0)
@@ -119,7 +119,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
 
         val_loss /= len(val_loader.dataset)
         val_mae /= len(val_loader.dataset)
-        print(f"Validation Loss: {val_loss:.4f}, Validation MAE: {val_mae:.4f}")
+        print(f"Validation Loss: {val_loss:.6f}, Validation MAE: {val_mae:.6f}")
 
         wandb.log({"epoch": epoch + 1, "loss": epoch_loss, "mae": epoch_mae, "val_loss": val_loss, "val_mae": val_mae})
 
@@ -128,7 +128,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
             best_val_loss = val_loss
             best_epoch = epoch + 1
             best_model_wts = model.state_dict()
-            torch.save(best_model_wts, f"weights/best_model_epoch_{best_epoch}_val_loss_{best_val_loss:.4f}.pth")
+            torch.save(best_model_wts, f"weights/best_model_epoch_{best_epoch}_val_loss_{best_val_loss:.6f}.pth")
 
     model.load_state_dict(best_model_wts)
     return model
@@ -137,7 +137,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
 def evaluate_model(model, test_loader):
     criterion = nn.MSELoss()
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model = model.to(device)
+    model = model.to(device).double()
     model.eval()
 
     test_loss = 0.0
@@ -146,7 +146,7 @@ def evaluate_model(model, test_loader):
     all_outputs = []
     with torch.no_grad():
         for inputs, labels in test_loader:
-            inputs, labels = inputs.to(device), labels.to(device).unsqueeze(1)
+            inputs, labels = inputs.to(device).double(), labels.to(device).unsqueeze(1).double()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             test_loss += loss.item() * inputs.size(0)
@@ -157,10 +157,10 @@ def evaluate_model(model, test_loader):
     test_loss /= len(test_loader.dataset)
     test_mae /= len(test_loader.dataset)
     test_r2 = r2_score(all_labels, all_outputs)
-    print(f"Test Loss: {test_loss:.4f}, Test MAE: {test_mae:.4f}, Test R²: {test_r2:.4f}")
+    print(f"Test Loss: {test_loss:.6f}, Test MAE: {test_mae:.6f}, Test R²: {test_r2:.6f}")
 
 # 主程序
-root_dir = 'dataset'  # 替换为图片所在目录
+root_dir = 'dataset_13'  # 替换为图片所在目录
 train_loader, val_loader, test_loader = preprocess_data(root_dir)
 model = build_model()
 model = train_model(model, train_loader, val_loader)
