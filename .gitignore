@@ -1,2 +1,4 @@
 wandb/
 weights/
+dataset_cl/
+*.pth
