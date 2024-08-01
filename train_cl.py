@@ -130,7 +130,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
             best_acc = val_acc
             best_epoch = epoch + 1
             best_model_wts = model.state_dict()
-            torch.save(best_model_wts, f"best_model_epoch_{best_epoch}_val_acc_{best_acc:.4f}.pth")
+            torch.save(best_model_wts, f"weights/best_model_epoch_{best_epoch}_val_acc_{best_acc:.4f}.pth")
 
     model.load_state_dict(best_model_wts)
     return model
@@ -165,7 +165,7 @@ def evaluate_model(model, test_loader):
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_acc:.4f}, Test Accuracy Score: {test_acc_score:.4f}")
 
 # 主程序
-root_dir = 'dataset_cl'  # 替换为数据集所在目录
+root_dir = 'datasets/dataset_cl'  # 替换为数据集所在目录
 train_loader, val_loader, test_loader = preprocess_data(root_dir)
 model = build_model()
 model = train_model(model, train_loader, val_loader)

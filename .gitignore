@@ -2,3 +2,4 @@ wandb/
 weights/
 datasets/
 *.pth
+predictions/
