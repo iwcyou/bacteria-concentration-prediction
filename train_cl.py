@@ -7,6 +7,11 @@ from torchvision import datasets, models, transforms
 from torch.utils.data import DataLoader, Dataset, random_split
 import wandb
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+import pandas as pd
+
 
 # 初始化wandb
 wandb.init(project="bacteria-classification")
@@ -18,7 +23,7 @@ class CustomDataset(Dataset):
         self.transform = transform
         self.img_paths = []
         self.labels = []
-        self.label_map = {"NC": 0, "Positive": 1, "Weakly positive": 2}
+        self.label_map = {"NC": 0, "Positive": 1, "Weakly_positive": 2}
 
         for label_name, label in self.label_map.items():
             folder_path = os.path.join(root_dir, label_name)
@@ -69,7 +74,9 @@ def build_model():
     model = models.resnet50(pretrained=True)
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 3)  # 3 classes: NC, Positive, Weakly positive
+    model.label_map = {"NC": 0, "Positive": 1, "Weakly_positive": 2}  # Save the label map
     return model
+
 
 # 训练模型
 def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001):
@@ -164,8 +171,22 @@ def evaluate_model(model, test_loader):
     test_acc_score = accuracy_score(all_labels, all_outputs)
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_acc:.4f}, Test Accuracy Score: {test_acc_score:.4f}")
 
+    # 计算混淆矩阵
+    cm = confusion_matrix(all_labels, all_outputs)
+    cm_df = pd.DataFrame(cm, index=[i for i in model.label_map.keys()], columns=[i for i in model.label_map.keys()])
+
+    # 绘制混淆矩阵
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues', xticklabels=cm_df.columns, yticklabels=cm_df.index)
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.title('Confusion Matrix')
+    plt.savefig('confusion_matrix.png')
+    # plt.show()
+
+
 # 主程序
-root_dir = 'datasets/dataset_cl'  # 替换为数据集所在目录
+root_dir = 'datasets/dataset3class'  # 替换为数据集所在目录
 train_loader, val_loader, test_loader = preprocess_data(root_dir)
 model = build_model()
 model = train_model(model, train_loader, val_loader)

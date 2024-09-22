@@ -71,9 +71,10 @@ def main(test_dir, model_path, output_file):
 
 
 # 替换为实际的路径
-# test_dir = 'datasets/test_nolabel/test_linchuang'
-test_dir = 'datasets/test_nolabel/test_tidu'
-model_path = 'weights/best_model_epoch_9_val_acc_1.0000.pth'
-output_file = 'predictions/prediction.txt'
+test_dir = 'datasets/test_nolabel'
+test_name = 'test_tidu'
+# test_name = 'test_linchuang'
+model_path = 'weights/best_model_epoch_15_val_acc_1.0000.pth'
+output_file = f'predictions/{test_name}.txt'
 
-main(test_dir, model_path, output_file)
+main(os.path.join(test_dir, test_name), model_path, output_file)
