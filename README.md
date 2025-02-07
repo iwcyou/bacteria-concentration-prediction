@@ -1,13 +1,15 @@
+**dataset**
+
+`datasets/dataset3class/`
+
+We classify the datasets into training set and test set. The corresponding labels of images are classified as `Positive`, `NC` and `Weakly_positive`.
+
+The source code follows Mozilla Licence.
+
 The final train code is `train_cl.py`.
 
-epoch是训练轮次，所有的表横坐标都是epoch。
+"acc" is accuracy. "val" is validation.
 
-acc是accuracy，准确率。
-
-train是训练集。
-
-val是validation，验证集。
-
-test数据集的数据只有一个0.96的准确率
+test dataset's accuracy is 100%.
 
 >  Test Loss: 0.0058, Test Accuracy: 1.0000, Test Accuracy Score: 1.0000
