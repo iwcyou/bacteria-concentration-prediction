@@ -1,4 +1,12 @@
-**dataset**
+## Requirement library
+
+`pip install -r requirement.txt`
+
+## Usage
+
+`python train_cl.py`
+
+## Dataset
 
 `datasets/dataset3class/`
 
