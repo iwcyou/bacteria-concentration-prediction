@@ -1,3 +1,10 @@
+"""
+Author: Kun Feng
+Date: 2025/3/19
+Description: This script is used to train a model to predict the concentration of bacteria based on images.
+Regression task.
+"""
+
 import os
 from PIL import Image
 import torch
