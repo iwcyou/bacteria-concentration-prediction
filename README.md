@@ -14,6 +14,12 @@ We classify the datasets into training set and test set. The corresponding label
 
 The source code follows Mozilla Licence.
 
+`datasets/H1N1/`
+5 class
+
+`datasets/class_11/`
+11 class
+
 The final train code is `train_cl.py`.
 
 "acc" is accuracy. "val" is validation.
