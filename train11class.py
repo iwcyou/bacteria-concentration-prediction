@@ -2,7 +2,7 @@
 Author: Kun Feng
 Date: 2025/3/19
 Description: This script is used to train a model to predict the concentration of virus based on images.
-Classification task (5 classes).
+Classification task (11 classes, ordered from high concentration to low).
 """
 
 import os
@@ -20,18 +20,24 @@ from sklearn.metrics import confusion_matrix
 import pandas as pd
 
 # ----------------------
-# 1. 配置wandb
+# 1. 配置 wandb
 # ----------------------
-wandb.init(project="virus-classification")  # 你可以根据需要改成其它项目名
+wandb.init(project="virus-classification-11-classes-ordered")  # 根据需要修改
 
 # ----------------------
-# 2. 定义五分类标签
+# 2. 定义 11 个分类标签（从大到小排列）
 # ----------------------
 class_names = [
-    "5ng_5pg",
-    "5pg_0.5fg",
-    "5ug_5ng",
     "more_than_5ug",
+    "5ug",
+    "0.5ug",
+    "0.05ug",
+    "5ng",
+    "0.5ng",
+    "0.05ng",
+    "5pg",
+    "0.5pg",
+    "0.05pg_0.5fg",
     "Negative"
 ]
 label_map = {class_name: i for i, class_name in enumerate(class_names)}
@@ -42,7 +48,8 @@ label_map = {class_name: i for i, class_name in enumerate(class_names)}
 class CustomDataset(Dataset):
     def __init__(self, root_dir, transform=None):
         """
-        root_dir下应包含 5ng_5pg, 5pg_0.5fg, 5ug_5ng, more_than_5ug, Negative 五个子文件夹
+        root_dir 下应包含下列 11 个子文件夹：
+        more_than_5ug, 5ug, 0.5ug, 0.05ug, 5ng, 0.5ng, 0.05ng, 5pg, 0.5pg, 0.05pg_0.5fg, Negative
         """
         self.root_dir = root_dir
         self.transform = transform
@@ -55,7 +62,7 @@ class CustomDataset(Dataset):
             if os.path.isdir(folder_path):
                 for img_name in os.listdir(folder_path):
                     img_path = os.path.join(folder_path, img_name)
-                    if img_path.endswith(('.tif', '.jpg', '.png', '.jpeg')):
+                    if img_path.lower().endswith(('.tif', '.jpg', '.png', '.jpeg')):
                         self.img_paths.append(img_path)
                         self.labels.append(label_idx)
 
@@ -101,7 +108,7 @@ def preprocess_data(root_dir, batch_size=32, val_split=0.2):
     train_size = len(train_dataset) - val_size
     train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size])
 
-    # 构建DataLoader
+    # 构建 DataLoader
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False)
     test_loader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False)
@@ -109,13 +116,13 @@ def preprocess_data(root_dir, batch_size=32, val_split=0.2):
     return train_loader, val_loader, test_loader
 
 # ----------------------
-# 5. 构建ResNet-50模型
+# 5. 构建 ResNet-50 模型
 # ----------------------
 def build_model():
     model = models.resnet50(pretrained=True)
     num_ftrs = model.fc.in_features
-    # 修改全连接层输出为5分类
-    model.fc = nn.Linear(num_ftrs, 5)
+    # 修改全连接层输出为 11 分类
+    model.fc = nn.Linear(num_ftrs, len(class_names))
     # 将标签映射也保存到模型实例，便于后续评估时使用
     model.label_map = label_map
     return model
@@ -127,7 +134,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-    device = torch.device("cuda:0" if  else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
     best_acc = 0.0
@@ -175,7 +182,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
         val_acc = val_corrects.double() / len(val_loader.dataset)
         print(f"Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_acc:.4f}")
 
-        # 记录到wandb
+        # 记录到 wandb
         wandb.log({
             "epoch": epoch + 1,
             "train_loss": epoch_loss,
@@ -231,25 +238,23 @@ def evaluate_model(model, test_loader):
 
     # 混淆矩阵
     cm = confusion_matrix(all_labels, all_outputs)
-
-    # 为了保证行列名称与 label_map 顺序一致，这里显式指定 class_names
     cm_df = pd.DataFrame(cm, index=class_names, columns=class_names)
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(10, 8))
     sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues',
                 xticklabels=cm_df.columns, yticklabels=cm_df.index)
     plt.xlabel('Predicted')
     plt.ylabel('True')
-    plt.title('Confusion Matrix')
+    plt.title('Confusion Matrix (11-class, ordered by concentration)')
     plt.savefig('confusion_matrix.png')
-    plt.close()  # 若不需要显示，可直接关闭
+    plt.close()
 
 # ----------------------
 # 8. 主程序入口
 # ----------------------
 if __name__ == "__main__":
     # 根据你的实际数据目录来设置
-    root_dir = 'datasets/H1N1'  # 替换为数据集所在目录
+    root_dir = 'datasets/class_11'  # 包含 train、test 子目录的根目录
     train_loader, val_loader, test_loader = preprocess_data(root_dir, batch_size=32, val_split=0.2)
 
     model = build_model()
