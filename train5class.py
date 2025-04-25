@@ -82,7 +82,7 @@ def preprocess_data(root_dir, batch_size=32, val_split=0.2):
 
     # 定义图像增强和标准化
     transform = transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
         transforms.RandomRotation(20),
@@ -127,7 +127,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-    device = torch.device("cuda:0" if  else "cpu")
+    device = torch.device("cuda:0" if  torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
     best_acc = 0.0
@@ -189,8 +189,7 @@ def train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
             best_acc = val_acc
             best_epoch = epoch + 1
             best_model_wts = model.state_dict()
-            if not os.path.exists("weights"):
-                os.makedirs("weights")
+            os.makedirs('weights', exist_ok=True)
             torch.save(best_model_wts, f"weights/best_model_epoch_{best_epoch}_val_acc_{best_acc:.4f}.pth")
 
     model.load_state_dict(best_model_wts)

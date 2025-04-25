@@ -3,3 +3,4 @@ weights/
 # datasets/
 *.pth
 predictions/
+__pycache__/

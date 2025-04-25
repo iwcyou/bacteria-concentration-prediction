@@ -10,6 +10,7 @@ from PIL import Image
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torchvision
 from torchvision import datasets, models, transforms
 from torch.utils.data import DataLoader, Dataset, random_split
 import wandb
@@ -89,7 +90,7 @@ def preprocess_data(root_dir, batch_size=32, val_split=0.2):
 
     # 定义图像增强和标准化
     transform = transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
         transforms.RandomRotation(20),
@@ -106,7 +107,7 @@ def preprocess_data(root_dir, batch_size=32, val_split=0.2):
     # 从训练集中切分验证集
     val_size = int(val_split * len(train_dataset))
     train_size = len(train_dataset) - val_size
-    train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size])
+    train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size], generator=torch.Generator().manual_seed(42))
 
     # 构建 DataLoader
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
@@ -119,7 +120,7 @@ def preprocess_data(root_dir, batch_size=32, val_split=0.2):
 # 5. 构建 ResNet-50 模型
 # ----------------------
 def build_model():
-    model = models.resnet50(pretrained=True)
+    model = models.resnet50(weights=torchvision.models.ResNet50_Weights.IMAGENET1K_V1)
     num_ftrs = model.fc.in_features
     # 修改全连接层输出为 11 分类
     model.fc = nn.Linear(num_ftrs, len(class_names))
