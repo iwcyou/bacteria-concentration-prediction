@@ -51,7 +51,7 @@ def load_model(weights_path):
 # 构造 prompt
 # ----------------------
 def generate_prompt(predicted_label):
-    return f"请根据图像中检测到的甲型流感病毒浓度为【{predicted_label}】的情况，为患者提供诊疗建议。请你返回纯文本格式的建议，避免使用 HTML 或 Markdown 格式。请确保建议内容简洁明了，便于患者理解。"
+    return f"请根据图像中检测到的甲型流感病毒浓度为【{predicted_label}】的情况，为患者提供诊疗建议。请你使用英文回答，并返回纯文本格式的建议，避免使用 HTML 或 Markdown 格式。请确保建议内容简洁明了，便于患者理解。"
 
 # ----------------------
 # 请求 DeepSeek API
