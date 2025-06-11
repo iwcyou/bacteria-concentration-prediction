@@ -256,7 +256,7 @@ def evaluate_model(model, test_loader):
 if __name__ == "__main__":
     # 根据你的实际数据目录来设置
     root_dir = 'datasets/class_11'  # 包含 train、test 子目录的根目录
-    train_loader, val_loader, test_loader = preprocess_data(root_dir, batch_size=32, val_split=0.2)
+    train_loader, val_loader, test_loader = preprocess_data(root_dir, batch_size=4, val_split=0.2)
 
     model = build_model()
     model = train_model(model, train_loader, val_loader, epochs=50, learning_rate=0.001)
