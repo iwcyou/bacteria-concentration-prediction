@@ -5,6 +5,12 @@ from torchvision import models, transforms
 from PIL import Image
 import requests
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 # ----------------------
 # 定义标签和映射
 # ----------------------
@@ -80,8 +86,7 @@ def ask_deepseek(prompt, api_key):
 # 主流程
 # ----------------------
 def predict_single_image(image_path, weights_path):
-    # api_key = os.getenv("DEEPSEEK_API_KEY")
-    api_key = "sk-76c43391f6564f4d813b0592112ab92a"
+    api_key = os.getenv('DEEPSEEK_API_KEY')
     if not api_key:
         raise EnvironmentError("请设置环境变量 DEEPSEEK_API_KEY 以使用 DeepSeek API。")
 
@@ -108,5 +113,5 @@ def predict_single_image(image_path, weights_path):
 # ----------------------
 if __name__ == "__main__":
     image_path = "datasets/H1N1/test/5ng_5pg/2.jpg"  # 替换为图像路径
-    weights_path = "weights/best_model_epoch_27_val_acc_1.0000.pth"  # 替换为模型路径
+    weights_path = "weights/best_model_epoch_7_val_acc_1.0000.pth"  # 替换为模型路径
     predict_single_image(image_path, weights_path)

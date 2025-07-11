@@ -5,17 +5,15 @@ from werkzeug.utils import secure_filename
 # 引入你之前的推理函数
 from predict_single_image import predict_single_image, ask_deepseek
 
-
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# api_key = os.getenv("DEEPSEEK_API_KEY")  # DeepSeek API密钥
-api_key = "sk-76c43391f6564f4d813b0592112ab92a"
+
 
 # 加载模型
-weights_path = "weights/best_model_epoch_27_val_acc_1.0000.pth"
+weights_path = "weights/best_model_epoch_7_val_acc_1.0000.pth"
 
 # 检查文件类型
 def allowed_file(filename):

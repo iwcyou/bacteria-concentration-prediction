@@ -4,3 +4,5 @@ weights/
 *.pth
 predictions/
 __pycache__/
+.env
+uploads/
