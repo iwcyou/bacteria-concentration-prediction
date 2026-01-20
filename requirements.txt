@@ -1,9 +1,10 @@
+# python==3.13
 matplotlib==3.9.2
-numpy==1.26.4
+numpy
 pandas==2.2.2
 pillow==10.4.0
 scikit-learn==1.5.1
-scipy==1.14.0
+scipy
 seaborn==0.13.2
 torch
 torchaudio
@@ -13,3 +14,4 @@ wandb==0.17.4
 distro==1.9.0
 flask
 python-dotenv
+pillow

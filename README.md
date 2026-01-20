@@ -1,26 +1,30 @@
+The source code follows Mozilla Licence.
+
 ## Requirement library
 
-`pip install -r requirement.txt`
+```bash
+pip install -r requirement.txt
+```
 
 ## Usage
 
-`python train_cl.py`
+The final train code is `train5class.py`, `train5class_cv-all` is Stratified 5-Fold Cross-Validation version.
 
-## Dataset
+```python
+python train5class.py
+```
+
+## Datasets
 
 `datasets/dataset3class/`
 
 We classify the datasets into training set and test set. The corresponding labels of images are classified as `Positive`, `NC` and `Weakly_positive`.
 
-The source code follows Mozilla Licence.
-
 `datasets/H1N1/`
-5 class
+5 classification
 
 `datasets/class_11/`
-11 class
-
-The final train code is `train_cl.py`.
+11 classification
 
 "acc" is accuracy. "val" is validation.
 
